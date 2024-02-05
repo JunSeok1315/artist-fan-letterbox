@@ -17,14 +17,13 @@ import {
   FormInput2,
   FormButtonContainer,
 } from "style/headerStyle";
-import fakeData from "fakeData.json";
 
 function Home() {
   const [selectedButton, setSelectedButton] = useState(1);
   const [nickname, setNickname] = useState("");
   const [content, setContent] = useState("");
   const [selectedArtist, setSelectedArtist] = useState("카리나");
-  const [fake, setFake] = useState(fakeData);
+  const [letters, setLetters] = useState([]);
 
   const navigate = useNavigate();
 
@@ -44,7 +43,9 @@ function Home() {
     setSelectedArtist(e.target.value);
   };
 
-  const handleLetterSubmit = () => {
+  const handleLetterSubmit = (e) => {
+    e.preventDefault();
+
     if (!nickname || !content) {
       alert("닉네임과 내용을 입력해주세요.");
       return;
@@ -55,15 +56,17 @@ function Home() {
       nickname,
       content,
       writedTo: selectedArtist,
-      id: fake.length + 1,
+      id: letters.length + 1,
     };
 
-    setFake((prevFakeData) => [...prevFakeData, newLetter]);
+    console.log("New Letter:", newLetter);
+
+    setLetters((prevLetters) => [...prevLetters, newLetter]);
     setNickname("");
     setContent("");
   };
 
-  const filteredData = fake.filter(
+  const filteredData = letters.filter(
     (letter) =>
       (letter.writedTo === "카리나" && selectedButton === 1) ||
       (letter.writedTo === "윈터" && selectedButton === 2) ||
